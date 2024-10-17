@@ -1,4 +1,6 @@
 /bin/
+/build/
+/.idea/
 /target/
 /.cache-main
 /.cache-tests
@@ -7,3 +9,4 @@
 /.classpath
 /.settings/
 /.readme.md.html
+/.gradle/

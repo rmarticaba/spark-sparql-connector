@@ -1,8 +1,11 @@
-package de.usu.research.sake.sparksparql
+package com.rapidminer.sparql.source
 
-import org.scalatest.FunSuite
+import org.junit.runner.RunWith
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatestplus.junit.JUnitRunner
 
-class SparqlInspectorSuite extends FunSuite {
+@RunWith(classOf[JUnitRunner])
+class SparqlInspectorSuite extends AnyFunSuite {
   test("select *") {
     val s = """PREFIX dbpo: <http://dbpedia.org/ontology/>
       | PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>

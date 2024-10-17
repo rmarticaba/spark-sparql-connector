@@ -1,4 +1,4 @@
-package de.usu.research.sake.sparksparql
+package com.rapidminer.sparql.source
 
 import org.apache.jena.query.QueryFactory
 import scala.collection.JavaConversions._

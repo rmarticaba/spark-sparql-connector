@@ -1,10 +1,7 @@
-package de.usu.research.sake.sparksparql
+package com.rapidminer.sparql.source
 
-import org.apache.spark.sql.sources.SchemaRelationProvider
-import org.apache.spark.sql.sources.RelationProvider
-import org.apache.spark.sql.sources.DataSourceRegister
-import org.apache.spark.sql.sources.BaseRelation
 import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.sources.{DataSourceRegister, RelationProvider, SchemaRelationProvider}
 import org.apache.spark.sql.types.StructType
 
 class DefaultSource extends RelationProvider with SchemaRelationProvider with DataSourceRegister {

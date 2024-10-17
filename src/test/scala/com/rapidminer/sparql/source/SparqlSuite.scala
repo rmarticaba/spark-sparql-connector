@@ -1,18 +1,18 @@
-package de.usu.research.sake.sparksparql
+package com.rapidminer.sparql.source
 
-import java.io.File
-import java.nio.charset.UnsupportedCharsetException
-import java.sql.Timestamp
-import org.apache.spark.sql.{ SQLContext, Row, SaveMode }
-import org.apache.spark.{ SparkContext, SparkException }
+import org.apache.spark.SparkContext
 import org.apache.spark.sql.types._
-import org.scalatest.{ BeforeAndAfterAll, FunSuite }
-import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.{DataFrame, SQLContext}
+import org.junit.runner.RunWith
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatestplus.junit.JUnitRunner
+
 import java.text.SimpleDateFormat
-import java.util.Locale
 import java.util.TimeZone
 
-class SparqlSuite extends FunSuite with BeforeAndAfterAll {
+@RunWith(classOf[JUnitRunner])
+class SparqlSuite extends AnyFunSuite with BeforeAndAfterAll {
   //val dbpediaEndpoint = "http://ustst018-cep-node1:3030/dbpedia/query"
   val dbpediaEndpoint = "mem:dataset=src/test/resources/dbpedia_extract.nt"
 
@@ -31,14 +31,15 @@ class SparqlSuite extends FunSuite with BeforeAndAfterAll {
     }
   }
 
-  test("select1") {
-    val frame = queryDbpedia("""SELECT ?object
-      | WHERE {
-      |   <http://dbpedia.org/ontology/> <http://purl.org/dc/terms/title> ?object
-      | }""".stripMargin)
+  test("select 1") {
+    val frame = queryDbpedia(
+      """SELECT ?object
+        | WHERE {
+        |   <http://dbpedia.org/ontology/> <http://purl.org/dc/terms/title> ?object
+        | }""".stripMargin)
     assert(frame.columns === Array("object"))
     val rows = frame.select("object").collect()
-    assert(rows.size === 1)
+    assert(rows.length === 1)
     assert(rows(0).getString(0) === "The DBpedia Ontology")
   }
 
@@ -54,7 +55,7 @@ class SparqlSuite extends FunSuite with BeforeAndAfterAll {
       | }""".stripMargin)
     assert(frame.columns === Array("x", "label"))
     val rows = frame.select("x").collect()
-    assert(rows.size === 9)
+    assert(rows.length === 9)
   }
 
   test("ask") {
@@ -67,7 +68,7 @@ class SparqlSuite extends FunSuite with BeforeAndAfterAll {
       | }""".stripMargin)
     assert(frame.columns === Array("ASK"))
     val rows = frame.select("ASK").collect()
-    assert(rows.size === 1)
+    assert(rows.length === 1)
     assert(rows(0).getString(0) === "true")
   }
 
@@ -82,7 +83,7 @@ class SparqlSuite extends FunSuite with BeforeAndAfterAll {
     val frame = queryDbpedia(query, StructType(List(StructField("ASK", BooleanType, false))))
     assert(frame.columns === Array("ASK"))
     val rows = frame.select("ASK").collect()
-    assert(rows.size === 1)
+    assert(rows.length === 1)
     assert(rows(0).getBoolean(0) === true)
   }
 
@@ -96,7 +97,7 @@ class SparqlSuite extends FunSuite with BeforeAndAfterAll {
       | }""".stripMargin)
     assert(df.columns === Array("Subject", "Predicate", "Object"))
     val rows = df.select("Subject", "Predicate", "Object").collect()
-    assert(rows.size === 9)
+    assert(rows.length === 9)
     val tuples = rows.map { r => (r.getString(0), r.getString(1), r.getString(2)) }
     assert(tuples.count { t =>
       t == ("http://dbpedia.org/ontology/SoccerLeague",
@@ -116,7 +117,7 @@ class SparqlSuite extends FunSuite with BeforeAndAfterAll {
       | }""".stripMargin)
     assert(df.columns === Array("Subject", "Predicate", "Object"))
     val rows = df.select("Subject", "Predicate", "Object").collect()
-    assert(rows.size > 5)
+    assert(rows.length > 5)
     val tuples = rows.map { r => (r.getString(0), r.getString(1), r.getString(2)) }
     assert(tuples.count { t =>
       t == ("http://dbpedia.org/ontology/SoccerLeague",
